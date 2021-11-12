@@ -302,14 +302,14 @@ Avec cette ligne sur votre console, même sans le débogue, vous savez déjà pl
   - votre inventaire est donc correct, car on a pu s'authentifier ; 
   - vous pouvez démarrer un shell, vous avez donc un minimum de droits pour agir... 
 
-Car évdemment ces faits ne viennent pas de WinRM ou SSH : ce sont des scripts qui sont joués localement et dont les résultats "remontent" à la machine Ansible. C'est l'intérêt d'avoir ici du Windows : Ansible ne gère pas directement du Python pour l'exécution locale sur la machine cible, mais du Powershell. On comprend bien qu'il y a autre chose que simplement "une connexion" qui est ouverte. 
+Car évidemment ces faits ne viennent pas de WinRM ou SSH : ce sont des scripts qui sont joués localement et dont les résultats "remontent" à la machine Ansible. C'est l'intérêt d'avoir ici du Windows : Ansible ne gère pas directement du Python pour l'exécution locale sur la machine cible, mais du Powershell. On comprend bien qu'il y a autre chose que simplement "une connexion" qui est ouverte. 
 
 Pour Linux, un interpréteur Python est cherché - car il est généralement disponible en standard sur cet OS (au moins feu Python 2). 
 
 Ainsi même un simple "ping", même sans passer par un livre de recettes, suit cette logique. Exemple toujours avec Windows : 
   - la machine est contactée, via le port cible de connexion à distance (WinRM dans notre cas) ; 
-  - Ansible s'authentifie (grâce à NTML dans notre cas) ; 
-  - Ansible envoie un emballage ("_wrapper_") pour les modules des tâches en Powershell, puis les différents modules Powershell eux-même, ceux qui sont appelés via des tâches ou en direct dans notre cas ; 
+  - Ansible s'authentifie (grâce à NTLM dans notre cas) ; 
+  - Ansible envoie un emballage ("_wrapper_") pour les modules des tâches en Powershell, puis les différents modules Powershell eux-mêmes, ceux qui sont appelés via des tâches ou en direct dans notre cas ; 
   - les scripts sont exécutés localement ; 
   - le résultat est récupéré, sérialisé en JSON et renvoyé à Ansible, qui le traite à son tour. 
 
@@ -403,7 +403,7 @@ Pour nos tests de vie, nous avons donc une piste sur le "comment" : l'usage de m
 ## Gérer les faits d'un parc 
 
 Nous avons vu deux points essentiels : 
-  - récupérer automatiquement un grand nombre d'informations, à partir l'équivalent du module par défaut "gather_facts" ; 
+  - récupérer automatiquement un grand nombre d'informations, à partir de l'équivalent du module par défaut "gather_facts" ; 
   - créer les siens et les stocker localement sur la machine Ansible. 
 
 Cependant cette histoire de faits récupérés, d'exécution locale, peut s'avérer compliquée au quotidien. Il faut comprendre que la sérialisation des variables et du contexte de la machine Ansible vers la machine cible, et la remontée des résultats, ne veut pas dire que les machines cibles communiquent directement elles (pas du tout). 
